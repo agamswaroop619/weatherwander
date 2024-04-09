@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "./App.css";
 function App() {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
