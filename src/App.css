@@ -36,3 +36,43 @@
     transform: rotate(360deg);
   }
 }
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.error {
+  color: red;
+}
+
+.loading {
+  font-style: italic;
+}
+
+.location {
+  font-weight: bold;
+}
+
+.weather-title, .places-title {
+  margin-top: 20px;
+}
+
+.weather-description, .weather-temperature {
+  margin-bottom: 10px;
+}
+
+.places-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.place-item {
+  margin-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 5px;
+}
+
+.place-item:last-child {
+  border-bottom: none;
+}
