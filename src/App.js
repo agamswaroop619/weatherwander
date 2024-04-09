@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+
 function App() {
   const [location, setLocation] = useState({ latitude: null, longitude: null });
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState(null);
   const [places, setPlaces] = useState([]);
+  const [temperatureInCelsius, setTemperatureInCelsius] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -12,12 +14,10 @@ function App() {
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              setLocation({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-              });
-              fetchWeather(position.coords.latitude, position.coords.longitude);
-              fetchPlaces(position.coords.latitude, position.coords.longitude); // Fetch places when location is obtained
+              const { latitude, longitude } = position.coords;
+              setLocation({ latitude, longitude });
+              fetchWeather(latitude, longitude);
+              fetchPlaces(latitude, longitude);
             },
             (error) => {
               setError("Error getting geolocation: " + error.message);
@@ -45,6 +45,8 @@ function App() {
       }
       const data = await response.json();
       setWeather(data);
+      const temperatureCelsius = data.main.temp - 273.15;
+      setTemperatureInCelsius(temperatureCelsius.toFixed(2));
     } catch (error) {
       setError("Error fetching weather: " + error.message);
     }
@@ -53,7 +55,7 @@ function App() {
   const fetchPlaces = async (lat, lon) => {
     try {
       const searchParams = new URLSearchParams({
-        query: "coffee",
+        query: "temple",
         ll: `${lat},${lon}`,
         open_now: "true",
         sort: "DISTANCE",
@@ -73,7 +75,6 @@ function App() {
         throw new Error("Places data not found.");
       }
       const data = await results.json();
-      console.log(data);
       setPlaces(data.results);
     } catch (error) {
       setError("Error fetching places: " + error.message);
@@ -101,7 +102,7 @@ function App() {
                 Description: {weather.weather[0].description}
               </p>
               <p className="weather-temperature">
-                Temperature: {weather.main.temp} °C
+                Temperature: {temperatureInCelsius} °C
               </p>
             </div>
           )}
